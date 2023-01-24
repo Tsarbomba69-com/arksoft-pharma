@@ -1,0 +1,23 @@
+.background-login {
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  background: #50bec8;
+  background: -webkit-linear-gradient(-135deg, #50bec8, #4158d0);
+  background: -o-linear-gradient(-135deg, #50bec8, #4158d0);
+  background: -moz-linear-gradient(-135deg, #50bec8, #4158d0);
+  background: linear-gradient(-135deg, #50bec8, #4158d0);
+  padding: 52px 90px 33px 85px;
+}
+
+.login-pic img {
+  max-width: 100%;
+}
+
+img {
+  vertical-align: middle;
+  border-style: none;
+}
