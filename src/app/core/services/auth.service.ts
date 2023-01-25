@@ -14,6 +14,9 @@ export class AuthService {
   private userURL: string = `${environment.apiUrl}/Users`;
 
   constructor(private http: HttpClient, private router: Router) {
+    const userJson = localStorage.getItem('user');
+    const user = userJson !== null ? JSON.parse(userJson) : null;
+    this.userBS = new BehaviorSubject<User | null>(user);
   }
 
   public get currentUser(): User | null {

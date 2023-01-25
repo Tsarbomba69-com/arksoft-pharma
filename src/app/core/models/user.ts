@@ -10,6 +10,7 @@ export interface User {
 }
 
 export class Role {
-  static DOCTOR = 'Doutor';
-  static PHARMACEUTICAL = "Farmacêutico"
+  static DOCTOR: string = 'Doutor';
+  static PHARMACEUTICAL: string = "Farmacêutico"
+  static ADMIN: string = 'Admin';
 }

@@ -9,9 +9,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
   declarations: [
     DashboardComponent
   ],
-  imports: [
-    CommonModule,
-    UserRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        UserRoutingModule,
+    ]
 })
 export class UserModule { }

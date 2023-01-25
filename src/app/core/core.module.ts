@@ -9,11 +9,16 @@ import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
+import { HeaderComponent } from './components/header/header.component';
+import { MainComponent } from './components/main/main.component';
+import {RouterModule, RouterOutlet} from "@angular/router";
 
 
 @NgModule({
   declarations: [
-    LoginFormComponent
+    LoginFormComponent,
+    HeaderComponent,
+    MainComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +29,9 @@ import {MessageService} from "primeng/api";
     ReactiveFormsModule,
     RippleModule,
     ButtonModule,
-    ToastModule
+    ToastModule,
+    RouterOutlet,
+    RouterModule
   ],
   providers: [MessageService]
 })
