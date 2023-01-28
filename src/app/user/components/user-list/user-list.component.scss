@@ -1,0 +1,5 @@
+@use "src/app/styles/list";
+
+::ng-deep datatable.p-datatable-customers .p-paginator {
+  margin-bottom: 50px;
+}

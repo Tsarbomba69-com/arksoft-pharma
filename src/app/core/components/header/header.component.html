@@ -1,19 +1,24 @@
 <ng-template #sidenav let-offcanvas>
-  <div class="offcanvas-header">
-    <h4 class="offcanvas-title" id="offcanvas-basic-title">Profile update</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+  <div class="offcanvas-header" style="background-color: #4158D0FF; color: white">
+    <h4 class="offcanvas-title" id="offcanvas-basic-title">{{ authService.currentUser?.name }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
   </div>
-  <div class="offcanvas-body">
-    <div class="text-end">
-      <button type="button" class="btn btn-outline-dark" (click)="offcanvas.close('Save click')">Save</button>
-    </div>
+  <div class="offcanvas-body navigation">
+    <ul>
+      <li *ngFor="let i of items" class="item">
+        <a [routerLink]="i.path">
+          <i [class]="i.icon"></i> {{ i.title }}
+        </a>
+      </li>
+    </ul>
   </div>
 </ng-template>
 
-<header class="navbar navbar-expand navbar-dark px-4 flex-column flex-md-row" style="border-style: solid;">
-  <a type="button" (click)="open(sidenav)">
-    <h3 style="text-align: center;">
-      <b>Farmácia <img style="max-height: 60px" alt="logo" src="assets/icons/logo.png"></b>
-    </h3>
-  </a>
+<header class="navbar navbar-dark px-4 flex-column flex-md-row navigation" style="top:0; position: sticky">
+  <button class="navbar-toggler" type="button" (click)="open(sidenav)"
+          aria-expanded="false" aria-label="Toggle navigation"><span
+    class="navbar-toggler-icon"></span></button>
+  <h3 style="text-align: center;">
+    <b>Farmácia <img style="max-height: 60px" alt="logo" src="assets/icons/logo.png"></b>
+  </h3>
 </header>

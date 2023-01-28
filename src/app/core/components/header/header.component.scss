@@ -1,7 +1,37 @@
-header {
+.navigation {
   background: #50bec8;
   background: -webkit-linear-gradient(-135deg, #50bec8, #4158d0);
   background: -o-linear-gradient(-135deg, #50bec8, #4158d0);
   background: -moz-linear-gradient(-135deg, #50bec8, #4158d0);
   background: linear-gradient(-135deg, #50bec8, #4158d0);
+  color: white;
+  z-index: 1000;
+}
+
+.item {
+  background: transparent;
+  transition: background .35s;
+}
+
+.item a {
+  text-decoration: none;
+  color: #eee;
+  display: inline-block;
+  padding: 20px 20px 20px 30px;
+  width: 100%;
+}
+
+.item.active,
+.item:hover {
+  background: rgba(0, 0, 0, .1);
+}
+
+a:focus {
+  background: rgba(0, 0, 0, .1);
+}
+
+ul {
+  list-style: none;
+  height: 100%;
+  overflow: auto;
 }

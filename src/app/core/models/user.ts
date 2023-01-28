@@ -9,8 +9,9 @@ export interface User {
   role: string
 }
 
-export class Role {
-  static DOCTOR: string = 'Doutor';
-  static PHARMACEUTICAL: string = "Farmacêutico"
-  static ADMIN: string = 'Admin';
+export enum Role {
+  DOCTOR = 'Doutor',
+  PHARMACEUTICAL = "Farmacêutico",
+  ADMIN = 'Admin',
+  CUSTOMER = 'Cliente',
 }

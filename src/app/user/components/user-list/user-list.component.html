@@ -1,0 +1,78 @@
+<div class="mb-3">
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <p-button class="p-button-rounded" pTooltip="Registrar usuário" icon="pi pi-plus"
+                [routerLink]="['/user/', action.CREATE, null]"></p-button>
+    </div>
+  </p-toolbar>
+</div>
+<div style="margin: auto; width: 100px">
+  <p-progressSpinner *ngIf="filteredUsers.length === 0 && loading; else contextCheck"></p-progressSpinner>
+</div>
+<ng-template #contextCheck>
+  <h3 style="margin: auto;width: 50%;" *ngIf="!loading && filteredUsers.length === 0" class="text-center">N/A</h3>
+</ng-template>
+
+<p-table *ngIf="filteredUsers.length !== 0" [value]="filteredUsers" [paginator]="true" [rows]="rows"
+         [showCurrentPageReport]="true" [(first)]="first" styleClass="p-datatable-customers" [rowHover]="true"
+         responsiveLayout="scroll" currentPageReportTemplate="Mostrar {first}º até {last}º em {totalRecords} usuários"
+         [rowsPerPageOptions]="[10,25,50]">
+  <ng-template pTemplate="header">
+    <tr class="p-selectable-row">
+      <th pSortableColumn="bi">B.I
+        <p-sortIcon field="bi"></p-sortIcon>
+      </th>
+      <th pSortableColumn="name">Nome
+        <p-sortIcon field="name"></p-sortIcon>
+      </th>
+      <th pSortableColumn="username">Nome de utilizador
+        <p-sortIcon field="username"></p-sortIcon>
+      </th>
+      <th pSortableColumn="role">Tipo
+        <p-sortIcon field="role"></p-sortIcon>
+      </th>
+      <th pSortableColumn="birthDate">Data de nascimento
+        <p-sortIcon field="birthDate"></p-sortIcon>
+      </th>
+      <th style="width: 8rem"></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+    <tr class="shadow-7 hover:shadow-8">
+      <td>
+        <span class="p-column-title">B.I</span> {{user.bi}}
+      </td>
+      <td>
+        <!--TODO: Make into a separate component-->
+        <div style="cursor: pointer;transition: all 0.2s ease-in-out"
+             class="glow-button" [routerLink]="['/user/', action.READ, user.id]">
+          <span class="p-column-title">Nome</span>
+          <img [src]="user.photo ? user.photo : 'assets/icons/user-fb.png'" width="32" height="32"
+               style="vertical-align: middle;border-radius:50%" alt="{{user.name}}"> {{user.name}}
+        </div>
+      </td>
+      <td>
+        <span class="p-column-title">Nome de utilizador</span> {{user.username}}
+      </td>
+      <td>
+        <span class="p-column-title">Tipo</span>
+        <span class="customer-badge status-Cancelada" style="border-radius: 50%">{{user.role}}</span>
+      </td>
+      <td>
+        <span class="p-column-title">Data de nascimento</span> {{user.birthDate | date:'MMM d, y' }};
+        <small>{{userService.calculateAge(user.birthDate) }} anos</small>
+      </td>
+      <td style="text-align: center">
+        <button pButton (click)="more.toggle($event)" type="button" class="p-button-secondary"
+                icon="pi pi-cog"></button>
+        <p-overlayPanel #more [styleClass]="'grid max-w-30rem'">
+          <button pButton pRipple type="button" icon="pi pi-search"
+                  class="p-button-rounded p-button-success" [routerLink]="['/user/', action.READ, user.id]"></button>
+          <br><br>
+          <button pButton pRipple type="button" icon="pi pi-user-edit" [routerLink]="['/user/', action.UPDATE, user.id]"
+                  class="p-button-rounded p-button-warning"></button>
+        </p-overlayPanel>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

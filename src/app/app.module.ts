@@ -7,6 +7,7 @@ import {CoreModule} from "@core/core.module";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ErrorInterceptor} from "@core/helpers/error.interceptor";
+import {JwtInterceptor} from "@core/helpers/jwt.interceptor";
 
 @NgModule({
   declarations: [
@@ -23,6 +24,11 @@ import {ErrorInterceptor} from "@core/helpers/error.interceptor";
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
       multi: true
     }
   ],

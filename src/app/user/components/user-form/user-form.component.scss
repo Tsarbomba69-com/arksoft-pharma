@@ -1,0 +1,27 @@
+//lg: large
+@media only screen and (min-width: 1280px) and (max-width: 1919px) {
+  .resize {
+    max-width: calc(90vw - 600px);
+  }
+}
+
+//sm: small
+@media only screen and (min-width: 600px) and (max-width: 959px) {
+  .resize {
+    max-width: 100vw;
+  }
+}
+
+//xs: extra small
+@media only screen and (max-width: 599px) {
+  .resize {
+    max-width: 100vw;
+  }
+}
+
+//md: medium
+@media only screen and (min-width: 960px) and (max-width: 1279px) {
+  .resize {
+    max-width: calc(90vw - 400px);
+  }
+}
