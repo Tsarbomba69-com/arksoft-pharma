@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Action, Role, User} from "@core/models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {mergeMap, Observable, Subscription} from "rxjs";
 import {UserService} from "@user/services";
 import {AlertService} from "@core/services";
@@ -79,6 +79,22 @@ export class UserFormComponent implements OnInit {
             this.loading = false;
           },
         });
+    },
+    [Action.UPDATE]: (user: User) => {
+      return this.userService
+        .putUser({...user, id: this.id})
+        .subscribe({
+          error: res => {
+            this.alertService.errorAlert(res);
+            this.loading = false;
+          },
+          next: () => {
+            this.form.reset();
+            this.alertService.successAlert('Usuário editado!');
+            this.loading = false;
+            this.router.navigate(['/user/list']);
+          },
+        });
     }
   };
 
@@ -92,6 +108,7 @@ export class UserFormComponent implements OnInit {
     public userService: UserService,
     private alertService: AlertService,
     private msgSrv: MessageService,
+    private router: Router
   ) {
     this.alertService.messageService = msgSrv;
   }

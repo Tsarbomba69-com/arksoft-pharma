@@ -42,4 +42,8 @@ export class UserService {
       return u;
     }));
   }
+
+  putUser(user: User) {
+    return this.http.put<User>(`${this.userURL}/${user.id}`, user);
+  }
 }
