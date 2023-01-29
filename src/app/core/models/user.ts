@@ -3,10 +3,11 @@ export interface User {
   name: string,
   username: string,
   email: string,
-  nif: string,
+  bi: string,
   password: string,
   token?: string,
-  role: string
+  role: string,
+  photo?: string
 }
 
 export enum Role {

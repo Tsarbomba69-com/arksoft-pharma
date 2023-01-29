@@ -25,3 +25,13 @@
     max-width: calc(90vw - 400px);
   }
 }
+
+::ng-deep .p-panel .p-panel-content {
+  padding: 1.25rem;
+  border: 1px solid #dee2e6;
+  background: mintcream;
+  color: #495057;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border-top: 0 none;
+}

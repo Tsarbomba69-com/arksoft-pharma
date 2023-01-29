@@ -8,15 +8,15 @@ import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
-import {HeaderComponent, MainComponent, FooterComponent, LoginFormComponent} from '@core/components';
+import {HeaderComponent, FooterComponent, LoginFormComponent} from '@core/components';
 import {RouterModule, RouterOutlet} from "@angular/router";
+import {TooltipModule} from "primeng/tooltip";
 
 
 @NgModule({
   declarations: [
     LoginFormComponent,
     HeaderComponent,
-    MainComponent,
     FooterComponent
   ],
   imports: [
@@ -30,7 +30,12 @@ import {RouterModule, RouterOutlet} from "@angular/router";
     ButtonModule,
     ToastModule,
     RouterOutlet,
-    RouterModule
+    RouterModule,
+    TooltipModule
+  ],
+  exports: [
+    HeaderComponent,
+    FooterComponent
   ],
   providers: [MessageService]
 })

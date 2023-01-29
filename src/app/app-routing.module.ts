@@ -1,12 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {Role} from "@core/models";
 
 const routes: Routes = [
-  {path: '', redirectTo: 'user', pathMatch: 'full'},
-  {
-    path: 'user',
-    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
-  }
+  {path: '', redirectTo: 'main', pathMatch: 'full'},
+  {path: 'main', loadChildren: () => import('./main/main.module').then(m => m.MainModule)},
 ];
 
 @NgModule({

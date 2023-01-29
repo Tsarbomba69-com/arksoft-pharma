@@ -2,3 +2,41 @@
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: rgba(231, 230, 230, 0.79);
+}
+
+.disabled {
+  pointer-events: none;
+}
+
+.fade-in {
+  animation: fadeIn .5s forwards ease;
+}
+
+.fade-out {
+  animation: fadeOut .5s forwards ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+

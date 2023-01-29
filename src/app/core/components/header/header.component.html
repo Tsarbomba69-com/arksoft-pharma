@@ -1,12 +1,19 @@
 <ng-template #sidenav let-offcanvas>
   <div class="offcanvas-header" style="background-color: #4158D0FF; color: white">
-    <h4 class="offcanvas-title" id="offcanvas-basic-title">{{ authService.currentUser?.name }}</h4>
+    <h4 class="offcanvas-title" id="offcanvas-basic-title"><img
+      [src]="authService.currentUser?.photo ? authService.currentUser?.photo : 'assets/icons/user-fb.png'" width="32"
+      height="32"
+      style="vertical-align: middle;border-radius:50%" alt="Foto de perfil"> {{ authService.currentUser?.name }}</h4>
+    <span class="item logout-btn"><a type="button" pTooltip="Logout"
+                                     tooltipPosition="bottom" style="padding: 10px 10px 10px 10px;"
+                                     (click)="authService.logout();offcanvas.dismiss()">
+      <i class="pi pi-sign-out"></i></a></span>
     <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
   </div>
   <div class="offcanvas-body navigation">
     <ul>
       <li *ngFor="let i of items" class="item">
-        <a [routerLink]="i.path">
+        <a [routerLink]="i.path" (click)="offcanvas.dismiss()">
           <i [class]="i.icon"></i> {{ i.title }}
         </a>
       </li>

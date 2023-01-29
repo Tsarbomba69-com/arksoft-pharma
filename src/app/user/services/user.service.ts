@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "@env/environment";
 import {User} from "@core/models";
 import {map, tap} from "rxjs";
+import {AuthService} from "@core/services";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class UserService {
   private userURL: string = `${environment.apiUrl}/Users`;
   public minBirthDate: Date = new Date(new Date().getTime() - 504921600000);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
   }
 
   public calculateAge(birthDate: string | Date): number {
@@ -29,9 +30,9 @@ export class UserService {
 
   getUsers() {
     return this.http.get<User[]>(this.userURL).pipe(
-      map(us => us.map(u => {
+      map(us => us.filter(u => {
         u.password = '';
-        return u;
+        return u.id !== this.authService.currentUser?.id;
       }))
     );
   }
@@ -45,5 +46,9 @@ export class UserService {
 
   putUser(user: User) {
     return this.http.put<User>(`${this.userURL}/${user.id}`, user);
+  }
+
+  deleteUser(id: number) {
+    return this.http.delete(`${this.userURL}/${id}`);
   }
 }

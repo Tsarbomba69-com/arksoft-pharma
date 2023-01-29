@@ -27,6 +27,9 @@
       ],
       "@user/*": [
         "src/app/user/*"
+      ],
+      "@product/*": [
+        "src/app/product/*"
       ]
     },
     "useDefineForClassFields": false,

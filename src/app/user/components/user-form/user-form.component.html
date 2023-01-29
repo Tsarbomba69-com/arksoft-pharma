@@ -23,7 +23,7 @@
     ></button>
   </div>
 
-  <p-panel [header]="pageInfo[action].title">
+  <p-panel [header]="pageInfo[action]?.title">
     <form [formGroup]="form" (submit)="submit()">
       <div style="margin: auto; width: 100px">
         <p-progressSpinner *ngIf="loading"></p-progressSpinner>
@@ -33,23 +33,23 @@
         <!--Nome-->
         <div class="col-12 md:col-6 lg:col-3 p-fluid" [ngClass]="{'disabled': action === actions.READ}">
           <div>
-            <i class="pi pi-user"></i> *Nome
+            <i class="pi pi-user"></i> Nome <span style="opacity:.5">*</span>
           </div>
           <input title="Nome"
                  [formControlName]="FORM.name"
                  placeholder="Nome"
-                 [readonly]="action === actions.READ"
                  [ngClass]="{ 'is-invalid': submitted && f[FORM.name].errors }"
                  [readonly]="action === actions.READ"
                  class="form-control">
-          <small *ngIf="f[FORM.name]?.errors && f[FORM.name]?.errors!['required']" class="p-error">
-            Nome do usuário é <strong>obrigatório!</strong>
+          <small *ngIf="f[FORM.name]?.errors && f[FORM.name]?.errors!['required'] && f[FORM.name].touched"
+                 class="p-error">
+            Nome é <strong>obrigatório!</strong>
           </small>
         </div>
         <!--Nome de utilizador-->
         <div class="col-12 md:col-6 lg:col-3 p-fluid" [ngClass]="{'disabled': action === actions.READ}">
           <div>
-            <i class="pi pi-user"></i> *Nome utilizador
+            <i class="pi pi-user"></i> Nome utilizador <span style="opacity:.5">*</span>
           </div>
           <input title="Nome de utilizador"
                  [formControlName]="FORM.username"
@@ -57,21 +57,22 @@
                  [readonly]="action === actions.READ"
                  [ngClass]="{ 'is-invalid': submitted && f[FORM.username].errors }"
                  class="form-control">
-          <small *ngIf="f[FORM.username]?.errors && f[FORM.username]?.errors!['required']" class="p-error">
+          <small *ngIf="f[FORM.username]?.errors && f[FORM.username]?.errors!['required']  && f[FORM.username].touched"
+                 class="p-error">
             Nome de utilizador é <strong>obrigatório!</strong>
           </small>
         </div>
         <!--BI-->
         <div class="col-12 md:col-6 lg:col-3 p-fluid">
           <div class="ui-grid-col-2">
-            <i class="pi pi-id-card"></i> *Bilhete de Identidade
+            <i class="pi pi-id-card"></i> Bilhete de Identidade <span style="opacity:.5">*</span>
           </div>
           <input title="B.I" pInputText type="text" class="form-control" [formControlName]="FORM.bi" minlength="14"
                  maxLength="14" [ngClass]="{ 'is-invalid': submitted && f[FORM.bi].errors }"
                  [readonly]="action === actions.READ"
                  style="text-transform: uppercase">
 
-          <div *ngIf="f[FORM.bi].errors" class="p-error">
+          <div *ngIf="f[FORM.bi].errors && f[FORM.bi].touched" class="p-error">
             <small *ngIf="f[FORM.bi].getError('required')" class="p-error">B.I é
               <strong>obrigatório!</strong></small>
             <small *ngIf="f[FORM.bi].dirty && !f[FORM.bi].getError('required')" class="p-error">B.I tem que ter 14
@@ -81,29 +82,29 @@
         <!--Email-->
         <div class="col-12 md:col-6 lg:col-3 p-fluid">
           <div class="ui-grid-col-2">
-            <i class="pi pi-envelope"></i> *E-mail
+            <i class="pi pi-envelope"></i> E-mail <span style="opacity:.5">*</span>
           </div>
           <div class="ui-grid-col-6 p-fluid">
-            <input title="Email" label="Email" pInputText class="form-control" [formControlName]="FORM.email"
+            <input title="Email" pInputText class="form-control" [formControlName]="FORM.email"
                    [ngClass]="{ 'is-invalid': submitted && f[FORM.email].errors }" [readonly]="action === actions.READ">
           </div>
-          <small *ngIf="f[FORM.email].hasError('pattern')" class="p-error">Digite um endereço
+          <small *ngIf="f[FORM.email].hasError('pattern') && f[FORM.email].touched" class="p-error">Digite um endereço
             de e-mail válido</small>
-          <small *ngIf="f[FORM.email].hasError('required')" class="p-error">
+          <small *ngIf="f[FORM.email].hasError('required')  && f[FORM.email].touched" class="p-error">
             E-mail é <strong>obrigatório!</strong>
           </small>
         </div>
         <!--Palavra-passe-->
         <div *ngIf="action !== actions.READ" class="col-12 md:col-6 lg:col-3 p-fluid">
           <div class="ui-grid-col-2">
-            <i class="pi pi-lock"></i> *Palavra-passe
+            <i class="pi pi-lock"></i> Palavra-passe <span style="opacity:.5">*</span>
           </div>
           <div class="ui-grid-col-6 p-fluid">
             <p-password [toggleMask]="true" [feedback]="false" [formControlName]="FORM.password"
                         styleClass="p-password p-component p-inputwrapper p-input-icon-right"
             ></p-password>
           </div>
-          <small *ngIf="f[FORM.password].hasError('required')" class="p-error">
+          <small *ngIf="f[FORM.password].hasError('required') && f[FORM.password].touched" class="p-error">
             Palavra-passe é <strong>obrigatória!</strong>
           </small>
         </div>
@@ -128,7 +129,7 @@
         <!--Data de nascimento-->
         <div class="field col-12 md:col-4">
           <div class="ui-grid-col-2">
-            <i class="pi pi-calendar"></i> Data de nascimento
+            <i class="pi pi-calendar"></i> Data de nascimento <span style="opacity:.5">*</span>
           </div>
           <div class="flex justify-content-start flex-wrap gap-2">
             <p-calendar *ngIf="action !== actions.READ"
@@ -152,8 +153,10 @@
           </div>
         </div>
         <!--Submission button-->
-        <div class="grid grid-nogutter justify-content-end justify-content-evenly mb-4 ml-2">
-          <p-button *ngIf="action !== actions.READ" [disabled]="loading" type="submit"
+        <div class="grid grid-nogutter justify-content-between mb-4 ml-2" style="width: 100%">
+          <button pButton pRipple label="Voltar" [routerLink]="['/user/list']" icon="pi pi-angle-left" type="button"
+                  class="p-button-danger"></button>
+          <p-button *ngIf="action !== actions.READ" [disabled]="loading || form.invalid" type="submit"
                     [label]="pageInfo[action].submitBtn" icon="pi pi-angle-right"
                     iconPos="right">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>

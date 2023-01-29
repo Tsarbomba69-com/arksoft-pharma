@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
         route.data['roles'].indexOf(user.role) === -1
       ) {
         // role not authorised so redirect to home page
-        this.router.navigate(['/user/login']);
+        this.router.navigate(['/main/login']);
         return false;
       }
 
@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    this.router.navigate(['/user/login']);
+    this.router.navigate(['/main/login']);
     return false;
   }
 }

@@ -5,6 +5,9 @@ ng generate component $component-name
 # Create module with routing
 ng generate module $modulename --routing
 
+# Create lazy loaded module
+ng g m $modulename --route $modulename --module app.module
+
 # Launch app
 ng serve --open
 

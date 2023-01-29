@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { UserRoutingModule } from './user-routing.module';
-import { DashboardComponent } from '@user/components';
-import { UserListComponent, UserFormComponent } from '@user/components';
+import {UserRoutingModule} from './user-routing.module';
+import {DashboardComponent} from '@user/components';
+import {UserListComponent, UserFormComponent} from '@user/components';
 import {MenuModule} from "primeng/menu";
 import {ToolbarModule} from "primeng/toolbar";
 import {ButtonModule} from "primeng/button";
@@ -18,6 +18,8 @@ import {CalendarModule} from "primeng/calendar";
 import {ToastModule} from "primeng/toast";
 import {TableModule} from "primeng/table";
 import {OverlayPanelModule} from "primeng/overlaypanel";
+import {ConfirmationService} from "primeng/api";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 
 @NgModule({
@@ -43,6 +45,9 @@ import {OverlayPanelModule} from "primeng/overlaypanel";
     ToastModule,
     TableModule,
     OverlayPanelModule,
-  ]
+    ConfirmDialogModule,
+  ],
+  providers: [ConfirmationService]
 })
-export class UserModule { }
+export class UserModule {
+}

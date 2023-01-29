@@ -5,7 +5,7 @@
   background: -moz-linear-gradient(-135deg, #50bec8, #4158d0);
   background: linear-gradient(-135deg, #50bec8, #4158d0);
   color: white;
-  z-index: 1000;
+  z-index: 800;
 }
 
 .item {
@@ -13,11 +13,15 @@
   transition: background .35s;
 }
 
+.item.logout-btn {
+  border-radius: 100px;
+}
+
 .item a {
   text-decoration: none;
   color: #eee;
   display: inline-block;
-  padding: 20px 20px 20px 30px;
+  padding: 20px 20px 20px 40px;
   width: 100%;
 }
 
@@ -32,6 +36,7 @@ a:focus {
 
 ul {
   list-style: none;
-  height: 100%;
+  height: max-content;
+  padding: 0;
   overflow: auto;
 }

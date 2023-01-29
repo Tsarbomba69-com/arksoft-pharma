@@ -58,7 +58,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.loading = false;
-          this.router.navigate(['user/main/dashboard']);
+          this.router.navigate(['/main']);
         },
         error: err => {
           this.loading = false;

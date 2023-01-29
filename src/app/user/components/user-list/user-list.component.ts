@@ -3,7 +3,7 @@ import {User, Action} from "@core/models";
 import {UserService} from "@user/services";
 import {Subscription} from "rxjs";
 import {AlertService} from "@core/services";
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-user-list',
@@ -18,17 +18,19 @@ export class UserListComponent implements OnInit, OnDestroy {
   actions = Action;
   first: number = 0;
   rows: number = 10;
-  subscription: Subscription = new Subscription();
+  subscriptions: Subscription[] = [];
 
   constructor(
     public userService: UserService,
     private alertService: AlertService,
-    private msgSrv: MessageService) {
+    private msgSrv: MessageService,
+    private confirmationService: ConfirmationService,
+  ) {
     this.alertService.messageService = this.msgSrv;
   }
 
   ngOnInit() {
-    this.subscription = this.userService.getUsers().subscribe({
+    this.subscriptions.push(this.userService.getUsers().subscribe({
       next: us => {
         this.users = us;
         this.filteredUsers = us;
@@ -38,10 +40,48 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.alertService.errorAlert(err);
         this.loading = false;
       },
-    });
+    }));
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
+
+  delete(userlId: number, index: number) {
+    this.confirmationService.confirm({
+      message: `Tem a certeza que deseja remover o ${this.users[index].role} ${this.users[index].name}?`,
+      accept: () => {
+        this.subscriptions.push(
+          this.userService.deleteUser(userlId).subscribe({
+            next: () => {
+              this.alertService.successAlert('Usuário removido');
+              this.users.splice(index, 1);
+              this.filteredUsers = this.users;
+              this.loading = false;
+            },
+            error: err => {
+              this.alertService.errorAlert(err);
+              this.loading = false;
+            },
+          })
+        );
+
+      }
+    });
+  }
+
+  searchUsers(el: HTMLInputElement) {
+    const text = el.value;
+    if (text.length <= 2) {
+      this.filteredUsers = this.users;
+      return;
+    }
+    const regex = new RegExp(text.trim(), 'i');
+    this.filteredUsers = this.users.filter(u =>
+      regex.test(u.name) ||
+      regex.test(u.username) ||
+      regex.test(u.bi) ||
+      regex.test(u.role));
+  }
+
 }
