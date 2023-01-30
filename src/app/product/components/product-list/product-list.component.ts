@@ -7,7 +7,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit {
-  products: any[] = [{name: 'Iboprufeno', price: 1500, id: 1}]
+  products: any[] = [{name: 'Iboprufeno', price: 1500, id: 1}];
   productDialog: boolean = false;
 
   product!: any;
@@ -16,16 +16,19 @@ export class ProductListComponent implements OnInit {
 
   submitted: boolean = false;
 
-  statuses: any[] = [];
+  categories: any[] = [];
 
   constructor(private messageService: MessageService, private confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
-    this.statuses = [
-      {label: 'INSTOCK', value: 'instock'},
-      {label: 'LOWSTOCK', value: 'lowstock'},
-      {label: 'OUTOFSTOCK', value: 'outofstock'}
+    this.categories = [
+      'Medicamento',
+      'Suplemento',
+      'Higiene pessoal',
+      'Dispositivo médico',
+      'Acessório médico',
+      'Cosmético'
     ];
   }
 
@@ -37,13 +40,13 @@ export class ProductListComponent implements OnInit {
 
   deleteSelectedProducts() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected products?',
-      header: 'Confirm',
+      message: 'Tem a certeza que deseja remover os produtos selecionados?',
+      header: 'Confirmar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.products = this.products.filter(val => !this.selectedProducts.includes(val));
         this.selectedProducts = [];
-        this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000});
+        this.messageService.add({severity: 'success', summary: 'Successo', detail: 'Produto removido', life: 3000});
       }
     });
   }
@@ -55,13 +58,13 @@ export class ProductListComponent implements OnInit {
 
   deleteProduct(product: any) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.name + '?',
-      header: 'Confirm',
+      message: 'Tem a certeza que pretende remover ' + product.name + '?',
+      header: 'Confirmar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.products = this.products.filter(val => val.id !== product.id);
         this.product = {};
-        this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000});
+        this.messageService.add({severity: 'success', summary: 'Successo', detail: 'Produto removido', life: 3000});
       }
     });
   }
@@ -74,15 +77,15 @@ export class ProductListComponent implements OnInit {
   saveProduct() {
     this.submitted = true;
 
-    if (this.product.name.trim()) {
+    if (this.product.name?.trim()) {
       if (this.product.id) {
         this.products[this.findIndexById(this.product.id)] = this.product;
-        this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
+        this.messageService.add({severity: 'success', summary: 'Successo', detail: 'Produto actualizado', life: 3000});
       } else {
         this.product.id = this.createId();
         this.product.image = 'product-placeholder.svg';
         this.products.push(this.product);
-        this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000});
+        this.messageService.add({severity: 'success', summary: 'Successo', detail: 'Produto registrado', life: 3000});
       }
 
       this.products = [...this.products];

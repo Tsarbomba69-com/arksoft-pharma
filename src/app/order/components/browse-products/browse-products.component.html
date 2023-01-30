@@ -1,0 +1,25 @@
+<div class="fade-in">
+  <div class="card">
+    <p-toolbar styleClass="mb-4 gap-2">
+      <ng-template pTemplate="left">
+        <p-button class="p-button-rounded mr-1" badge="0" pTooltip="Finalizar venda" icon="pi pi-cart-plus">
+        </p-button>
+      </ng-template>
+    </p-toolbar>
+
+    <div class="grid">
+      <div class="product-card m-2 mb-2 col-2">
+        <a type="button" pTooltip="Ver detalhes" tooltipPosition="top" class="imgBox">
+          <img src="assets/img/toppng.com-pink-donut-png-600x415.png"
+               alt="" class="mouse">
+        </a>
+
+        <div class="contentBox">
+          <h3>Ibuprofeno</h3>
+          <h2 class="price">{{ '1500' | currency: '':'AOA' }}</h2>
+          <a type="button" class="buy">Adicionar a venda</a>
+          <span class="category">Medicamento</span>
+        </div>
+      </div>
+    </div>
+  </div>

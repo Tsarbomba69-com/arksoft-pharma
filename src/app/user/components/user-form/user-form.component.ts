@@ -6,6 +6,7 @@ import {mergeMap, Observable, Subscription} from "rxjs";
 import {UserService} from "@user/services";
 import {AlertService} from "@core/services";
 import {MessageService} from "primeng/api";
+import {FileUpload} from "primeng/fileupload";
 
 @Component({
   selector: 'app-user-form',
@@ -47,20 +48,18 @@ export class UserFormComponent implements OnInit {
     [this.FORM.name]: ['', [Validators.required, Validators.maxLength(60)]],
     [this.FORM.username]: ['', [Validators.required, Validators.maxLength(60)]],
     [this.FORM.bi]: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
-    [this.FORM.role]: [Role.DOCTOR, [
+    [this.FORM.role]: [Role.PHARMACIST, [
       Validators.required,
       Validators.pattern(String.raw`^[A-Z\u00C0-\u00ff]+[a-zA-Z\u00C0-\u00ff\s]*$`),
       Validators.maxLength(20)
     ]],
     [this.FORM.email]: ['', [Validators.required, Validators.pattern(String.raw`^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`)]],
     [this.FORM.password]: ['', Validators.required],
-    [this.FORM.birthDate]: this.userService.minBirthDate
+    [this.FORM.birthDate]: this.userService.minBirthDate,
   });
   roles: string[] = [
-    Role.DOCTOR,
-    Role.PHARMACEUTICAL,
+    Role.PHARMACIST,
     Role.ADMIN,
-    Role.CUSTOMER
   ];
   sexes: string[] = ['Masculino', 'Femenino', 'Outro'];
   private submitAction: {
@@ -70,7 +69,7 @@ export class UserFormComponent implements OnInit {
       return this.userService.postUser(user)
         .subscribe({
           next: () => {
-            this.form.reset();
+            this.form.reset({[this.FORM.role]: Role.PHARMACIST});
             this.alertService.successAlert('Registrado com successo!');
             this.loading = false;
           },
@@ -92,11 +91,12 @@ export class UserFormComponent implements OnInit {
             this.form.reset();
             this.alertService.successAlert('Usuário editado!');
             this.loading = false;
-            this.router.navigate(['/user/list']);
+            this.router.navigate(['/main/user/list']);
           },
         });
     }
   };
+  photo: string = '';
 
   get f() {
     return this.form.controls;
@@ -126,6 +126,7 @@ export class UserFormComponent implements OnInit {
       })).subscribe({
         next: value => {
           this.loading = false;
+          this.photo = value.photo!;
           this.form.patchValue(value);
         },
         error: err => {
@@ -147,8 +148,35 @@ export class UserFormComponent implements OnInit {
     }
 
     this.loading = true;
-    const d = new Date(this.f[this.FORM.birthDate].value);
-    this.f[this.FORM.birthDate].patchValue(new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())));
+
+    if (this.f[this.FORM.birthDate].value) {
+      const d = new Date(this.f[this.FORM.birthDate].value);
+      this.f[this.FORM.birthDate].patchValue(new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())));
+    }
+    this.f[this.FORM.bi].patchValue(this.f[this.FORM.bi].value.trim());
     this.subscriptions.push(this.submitAction[this.action](this.form.value));
+  }
+
+  uploadImage(event: any, fileUpload: FileUpload) {
+    this.alertService.clear();
+    this.loading = true;
+    const form: FormData = new FormData();
+    form.append('photo', event.files[0]);
+    this.subscriptions.push(this.userService
+      .uploadImage(this.id, form)
+      .subscribe({
+        next: user => {
+          this.alertService.successAlert('Imagem carregada!');
+          this.form.patchValue(user);
+          this.photo = user?.photo!;
+          fileUpload.clear();
+          this.loading = false;
+        },
+        error: err => {
+          this.alertService.errorAlert(err);
+          fileUpload.clear();
+          this.loading = false;
+        },
+      }));
   }
 }

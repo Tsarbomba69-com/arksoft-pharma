@@ -27,17 +27,34 @@ export class HeaderComponent implements OnInit {
       {
         title: 'Dashboard',
         path: '/main',
-        icon: 'pi pi-chart-bar'
+        icon: 'pi pi-chart-bar',
       },
       {
         title: 'Usuários',
         path: '/main/user',
-        icon: 'pi pi-users'
+        icon: 'pi pi-users',
       },
       {
         title: 'Produtos',
         path: '/main/product',
         icon: 'pi pi-box'
+      },
+      {
+        title: 'Vendas',
+        path: '/main/order',
+        icon: 'pi pi-shopping-cart'
+      }
+    ],
+    [Role.PHARMACIST]: [
+      {
+        title: 'Dashboard',
+        path: '/main',
+        icon: 'pi pi-chart-bar',
+      },
+      {
+        title: 'Vendas',
+        path: '/main/order',
+        icon: 'pi pi-shopping-cart'
       }
     ]
   };

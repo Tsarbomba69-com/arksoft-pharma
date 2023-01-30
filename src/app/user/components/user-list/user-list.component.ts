@@ -51,6 +51,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.confirmationService.confirm({
       message: `Tem a certeza que deseja remover o ${this.users[index].role} ${this.users[index].name}?`,
       accept: () => {
+        this.loading = true;
         this.subscriptions.push(
           this.userService.deleteUser(userlId).subscribe({
             next: () => {

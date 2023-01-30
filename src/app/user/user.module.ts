@@ -20,6 +20,8 @@ import {TableModule} from "primeng/table";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {ConfirmationService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {ChartModule} from "primeng/chart";
+import {FileUploadModule} from "primeng/fileupload";
 
 
 @NgModule({
@@ -28,25 +30,27 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     UserListComponent,
     UserFormComponent
   ],
-  imports: [
-    CommonModule,
-    UserRoutingModule,
-    MenuModule,
-    ToolbarModule,
-    ButtonModule,
-    RippleModule,
-    PanelModule,
-    ReactiveFormsModule,
-    ProgressSpinnerModule,
-    InputTextModule,
-    DropdownModule,
-    PasswordModule,
-    CalendarModule,
-    ToastModule,
-    TableModule,
-    OverlayPanelModule,
-    ConfirmDialogModule,
-  ],
+    imports: [
+        CommonModule,
+        UserRoutingModule,
+        MenuModule,
+        ToolbarModule,
+        ButtonModule,
+        RippleModule,
+        PanelModule,
+        ReactiveFormsModule,
+        ProgressSpinnerModule,
+        InputTextModule,
+        DropdownModule,
+        PasswordModule,
+        CalendarModule,
+        ToastModule,
+        TableModule,
+        OverlayPanelModule,
+        ConfirmDialogModule,
+        ChartModule,
+        FileUploadModule,
+    ],
   providers: [ConfirmationService]
 })
 export class UserModule {

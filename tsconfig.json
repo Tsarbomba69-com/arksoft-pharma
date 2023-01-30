@@ -30,6 +30,9 @@
       ],
       "@product/*": [
         "src/app/product/*"
+      ],
+      "@order/*": [
+        "src/app/order/*"
       ]
     },
     "useDefineForClassFields": false,

@@ -11,8 +11,6 @@ export interface User {
 }
 
 export enum Role {
-  DOCTOR = 'Doutor',
-  PHARMACEUTICAL = "Farmacêutico",
+  PHARMACIST = "Farmacêutico",
   ADMIN = 'Admin',
-  CUSTOMER = 'Cliente',
 }

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "@env/environment";
 import {User} from "@core/models";
-import {map, tap} from "rxjs";
+import {filter, map, tap} from "rxjs";
 import {AuthService} from "@core/services";
 
 @Injectable({
@@ -29,19 +29,12 @@ export class UserService {
   }
 
   getUsers() {
-    return this.http.get<User[]>(this.userURL).pipe(
-      map(us => us.filter(u => {
-        u.password = '';
-        return u.id !== this.authService.currentUser?.id;
-      }))
-    );
+    return this.http.get<User[]>(this.userURL)
+      .pipe(map(us => us.filter(u => u.id !== this.authService.currentUser?.id)));
   }
 
   getUser(id: number) {
-    return this.http.get<User>(`${this.userURL}/${id}`).pipe(tap(u => {
-      u.password = '';
-      return u;
-    }));
+    return this.http.get<User>(`${this.userURL}/${id}`);
   }
 
   putUser(user: User) {
@@ -50,5 +43,11 @@ export class UserService {
 
   deleteUser(id: number) {
     return this.http.delete(`${this.userURL}/${id}`);
+  }
+
+  uploadImage(id: number, form: FormData) {
+    return this.http.put<User>(`${this.userURL}/${id}/photo`, form, {
+      reportProgress: true,
+    });
   }
 }
