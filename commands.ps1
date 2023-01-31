@@ -1,15 +1,19 @@
-ng generate guard $guardname
-ng generate interceptor $name
-ng generate component $component-name
+ng g g $guardname
+ng g interceptor $name
+ng g c $componentname
 
 # Create module with routing
-ng generate module $modulename --routing
+ng g m $modulename --routing
 
 # Create lazy loaded module
-ng g m $modulename --route $modulename --module app.module
+ng g m $modulename --route $modulename --module $targetmodulename
 
 # Launch app
-ng serve --open
+# -o: Open on browser after serving
+ng s -o
+
+# Deploy app
+ng deploy
 
 # Run this command to install the json program
 npm install -g json

@@ -2,17 +2,23 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
-  apiUrl: 'https://localhost:7016/api',
-  baseUrl: 'https://localhost:7016/',
-  production: false
-};
+// export const environment = {
+//   apiUrl: 'https://localhost:7016/api',
+//   baseUrl: 'https://localhost:7016/',
+//   production: false
+// };
 
 // export const environment = {
 //   apiUrl: 'http://localhost:5000/api',
 //   baseUrl: 'http://localhost:5000/',
 //   production: false
 // };
+
+export const environment = {
+  apiUrl: 'https://6abd-197-148-17-194.ap.ngrok.io/api',
+  baseUrl: 'https://6abd-197-148-17-194.ap.ngrok.io/',
+  production: false
+};
 
 /*
  * For easier debugging in development mode, you can import the following file

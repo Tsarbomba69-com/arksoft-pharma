@@ -46,7 +46,7 @@ import {InputTextareaModule} from "primeng/inputtextarea";
         TooltipModule,
         InputTextareaModule
     ],
-  providers: [ConfirmationService]
+
 })
 export class ProductModule {
 }
