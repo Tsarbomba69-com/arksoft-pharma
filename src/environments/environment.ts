@@ -17,7 +17,7 @@
 export const environment = {
   apiUrl: 'https://6abd-197-148-17-194.ap.ngrok.io/api',
   baseUrl: 'https://6abd-197-148-17-194.ap.ngrok.io/',
-  production: false
+  production: true
 };
 
 /*
