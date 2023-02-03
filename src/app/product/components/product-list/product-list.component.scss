@@ -1,0 +1,9 @@
+.product-image {
+  height: 140px;
+  width: 140px;
+  border-style: dashed;
+}
+
+::ng-deep .p-fluid .p-fileupload .p-button > span {
+  width: 48px;
+}

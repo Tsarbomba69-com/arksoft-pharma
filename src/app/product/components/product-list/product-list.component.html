@@ -1,25 +1,34 @@
+<p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>
 <div style="z-index: 800">
-  <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Detalhes do produto"
-            [modal]="true"
-            [baseZIndex]="800"
+  <p-dialog [(visible)]="productDialog" [baseZIndex]="800" [modal]="true"
+            [style]="{width: '450px'}"
+            header="Detalhes do produto"
             styleClass="p-fluid">
     <ng-template pTemplate="content">
-      <img src="assets/img/wp1931605-pharmacy-wallpapers.jpg" class="product-image"
-           *ngIf="product.image">
+      <div class="flex flex-column justify-content-center align-items-center">
+        <img [src]="product.image ? product.image : 'assets/icons/medicine.png'" alt="produto"
+             class="product-image"/>
+        <p-fileUpload #uploader (uploadHandler)="setImage($event, product, uploader)"
+                      [auto]="true" [customUpload]="true"
+                      accept="image/*"
+                      chooseIcon="pi-camera" mode="basic"
+                      uploadStyleClass="pi pt-2"></p-fileUpload>
+      </div>
       <div class="field">
         <label for="name">Nome</label>
-        <input type="text" pInputText id="name" [(ngModel)]="product.name" required autofocus/>
-        <small class="p-error" *ngIf="submitted && !product.name">Nome é obrigatório.</small>
+        <input [(ngModel)]="product.name" autofocus id="name" pInputText required type="text"/>
+        <small *ngIf="submitted && !product.name" class="p-error">Nome é obrigatório.</small>
       </div>
       <div class="field">
         <label for="description">Descrição</label>
-        <textarea id="description" pInputTextarea [(ngModel)]="product.description" required rows="3"
-                  cols="20"></textarea>
+        <textarea [(ngModel)]="product.description" cols="20" id="description" pInputTextarea required
+                  rows="3"></textarea>
       </div>
 
       <div class="field">
-        <label for="category">Categoria</label>
-        <p-dropdown [(ngModel)]="product.category" name="category" [options]="categories"
+        <label>Categoria</label>
+        <p-dropdown [(ngModel)]="product.category" [options]="categories" name="category"
+                    optionLabel="name"
                     placeholder="Selecione...">
         </p-dropdown>
       </div>
@@ -27,16 +36,16 @@
       <div class="formgrid grid">
         <div class="field col">
           <label for="price">Preço</label>
-          <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="AOA"
-                         locale="pt-PT"></p-inputNumber>
+          <p-inputNumber [(ngModel)]="product.price" currency="AOA" id="price" locale="pt-PT"
+                         mode="currency"></p-inputNumber>
         </div>
       </div>
     </ng-template>
 
     <ng-template pTemplate="footer">
-      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-      <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
-              (click)="saveProduct()"></button>
+      <button (click)="hideDialog()" class="p-button-text" icon="pi pi-times" label="Cancelar" pButton pRipple></button>
+      <button (click)="saveProduct()" class="p-button-text" icon="pi pi-check" label="Guardar" pButton
+              pRipple></button>
     </ng-template>
   </p-dialog>
 </div>
@@ -45,32 +54,35 @@
   <div class="card">
     <p-toolbar styleClass="mb-4 gap-2">
       <ng-template pTemplate="left">
-        <p-button class="p-button-rounded mr-1" pTooltip="Registrar produto" icon="pi pi-plus"
-                  (click)="openNew()"></p-button>
-        <button pButton pRipple icon="pi pi-trash" class="p-button-danger ml-1" pTooltip="Remover produto"
-                (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+        <p-button (click)="openNew()" class="p-button-rounded mr-1" icon="pi pi-plus"
+                  pTooltip="Registrar produto"></p-button>
+        <button (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"
+                class="p-button-danger ml-1" icon="pi pi-trash" pButton
+                pRipple pTooltip="Remover produto"></button>
       </ng-template>
 
       <ng-template pTemplate="right">
-        <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
-                      class="mr-2 inline-block"></p-fileUpload>
-        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+        <p-fileUpload [maxFileSize]="1000000" accept="image/*" chooseLabel="Import" class="mr-2 inline-block"
+                      label="Import"
+                      mode="basic"></p-fileUpload>
+        <button class="p-button-help" icon="pi pi-upload" label="Export" pButton pRipple></button>
       </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="products" [rows]="10" [paginator]="true"
-             [globalFilterFields]="['name','country.name','representative.name','status']"
-             [tableStyle]="{'min-width': '75rem'}"
-             [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+    <p-table [(selection)]="selectedProducts"
+             [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true"
+             [rowHover]="true"
+             [rows]="10"
+             [showCurrentPageReport]="true" [tableStyle]="{'min-width': '75rem'}" [value]="products"
              currentPageReportTemplate="Mostrar {first}º até {last}º em {totalRecords} produtos"
-             [showCurrentPageReport]="true">
+             dataKey="id">
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
           <h5 class="m-0">Produtos</h5>
           <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text"
-                           placeholder="Procurar..."/>
+                    <input pInputText placeholder="Procurar..."
+                           type="text"/>
                 </span>
         </div>
       </ng-template>
@@ -92,21 +104,23 @@
           <th></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-product>
+      <ng-template let-product pTemplate="body">
         <tr>
           <td>
             <p-tableCheckbox [value]="product"></p-tableCheckbox>
           </td>
           <td>{{product.name}}</td>
-          <td><img src="assets/img/toppng.com-pink-donut-png-600x415.png" [alt]="product.name" width="100"
-                   class="shadow-4"/></td>
+          <td><img [alt]="product.name" [src]="product.image ? product.image : 'assets/icons/medicine.png'"
+                   class="shadow-4"
+                   width="100"/></td>
           <td>{{product.price | currency:'':'AOA'}}</td>
-          <td>{{product.category}}</td>
+          <td>{{product.category.name}}</td>
           <td>
-            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2"
-                    (click)="editProduct(product)"></button>
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                    (click)="deleteProduct(product)"></button>
+            <button (click)="editProduct(product)" class="p-button-rounded p-button-warning mr-2" icon="pi pi-pencil"
+                    pButton
+                    pRipple></button>
+            <button (click)="deleteProduct(product)" class="p-button-rounded p-button-danger" icon="pi pi-trash" pButton
+                    pRipple></button>
           </td>
         </tr>
       </ng-template>
@@ -117,6 +131,6 @@
       <!--      </ng-template>-->
     </p-table>
   </div>
-  <p-confirmDialog [style]="{width: '450px'}" rejectLabel="Cancelar" header="Confirmação"
-                   acceptLabel="Confirmar"></p-confirmDialog>
+  <p-confirmDialog [style]="{width: '450px'}" acceptLabel="Confirmar" header="Confirmação"
+                   rejectLabel="Cancelar"></p-confirmDialog>
 </div>

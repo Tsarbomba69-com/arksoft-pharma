@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "target": " https://4bb0-197-148-17-194.ap.ngrok.io",
+    "secure": false
+  }
+}

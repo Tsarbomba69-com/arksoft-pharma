@@ -62,6 +62,7 @@ export class UserFormComponent implements OnInit {
     Role.ADMIN,
   ];
   sexes: string[] = ['Masculino', 'Femenino', 'Outro'];
+  photo: string = '';
   private submitAction: {
     [key: string]: (user: User) => Subscription;
   } = {
@@ -96,11 +97,6 @@ export class UserFormComponent implements OnInit {
         });
     }
   };
-  photo: string = '';
-
-  get f() {
-    return this.form.controls;
-  }
 
   constructor(
     private fb: FormBuilder,
@@ -111,6 +107,10 @@ export class UserFormComponent implements OnInit {
     private router: Router
   ) {
     this.alertService.messageService = msgSrv;
+  }
+
+  get f() {
+    return this.form.controls;
   }
 
   ngOnInit() {

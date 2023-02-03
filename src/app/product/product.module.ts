@@ -20,33 +20,35 @@ import {InputTextModule} from "primeng/inputtext";
 import {ConfirmationService} from "primeng/api";
 import {TooltipModule} from "primeng/tooltip";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {ToastModule} from "primeng/toast";
 
 
 @NgModule({
   declarations: [
     ProductListComponent
   ],
-    imports: [
-        CommonModule,
-        ProductRoutingModule,
-        CardModule,
-        ToolbarModule,
-        ButtonModule,
-        RippleModule,
-        FileUploadModule,
-        TableModule,
-        RatingModule,
-        RadioButtonModule,
-        FormsModule,
-        InputNumberModule,
-        ConfirmDialogModule,
-        DialogModule,
-        DropdownModule,
-        InputTextModule,
-        TooltipModule,
-        InputTextareaModule
-    ],
-
+  imports: [
+    CommonModule,
+    ProductRoutingModule,
+    CardModule,
+    ToolbarModule,
+    ButtonModule,
+    RippleModule,
+    FileUploadModule,
+    TableModule,
+    RatingModule,
+    RadioButtonModule,
+    FormsModule,
+    InputNumberModule,
+    ConfirmDialogModule,
+    DialogModule,
+    DropdownModule,
+    InputTextModule,
+    TooltipModule,
+    InputTextareaModule,
+    ToastModule
+  ],
+  providers: [ConfirmationService]
 })
 export class ProductModule {
 }
