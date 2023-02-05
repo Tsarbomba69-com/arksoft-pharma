@@ -5,46 +5,58 @@
             header="Detalhes do produto"
             styleClass="p-fluid">
     <ng-template pTemplate="content">
-      <div class="flex flex-column justify-content-center align-items-center">
-        <img [src]="product.image ? product.image : 'assets/icons/medicine.png'" alt="produto"
-             class="product-image"/>
-        <p-fileUpload #uploader (uploadHandler)="setImage($event, product, uploader)"
-                      [auto]="true" [customUpload]="true"
-                      accept="image/*"
-                      chooseIcon="pi-camera" mode="basic"
-                      uploadStyleClass="pi pt-2"></p-fileUpload>
+      <div style="margin: auto; width: 100px">
+        <p-progressSpinner *ngIf="loading"></p-progressSpinner>
       </div>
-      <div class="field">
-        <label for="name">Nome</label>
-        <input [(ngModel)]="product.name" autofocus id="name" pInputText required type="text"/>
-        <small *ngIf="submitted && !product.name" class="p-error">Nome é obrigatório.</small>
-      </div>
-      <div class="field">
-        <label for="description">Descrição</label>
-        <textarea [(ngModel)]="product.description" cols="20" id="description" pInputTextarea required
-                  rows="3"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Categoria</label>
-        <p-dropdown [(ngModel)]="product.category" [options]="categories" name="category"
-                    optionLabel="name"
-                    placeholder="Selecione...">
-        </p-dropdown>
-      </div>
-
-      <div class="formgrid grid">
-        <div class="field col">
-          <label for="price">Preço</label>
-          <p-inputNumber [(ngModel)]="product.price" currency="AOA" id="price" locale="pt-PT"
-                         mode="currency"></p-inputNumber>
+      <form (submit)="saveProduct()" *ngIf="!loading" [formGroup]="form">
+        <div class="flex flex-column justify-content-center align-items-center">
+          <img [src]="f[FORM.image].value ? f[FORM.image].value : 'assets/icons/medicine.png'" alt="produto"
+               class="product-image"/>
+          <p-fileUpload #uploader (uploadHandler)="setImage($event, form.value, uploader)"
+                        [auto]="true" [customUpload]="true"
+                        accept="image/*"
+                        chooseIcon="pi-camera" mode="basic"
+                        uploadStyleClass="pi pt-2"></p-fileUpload>
         </div>
-      </div>
+        <div class="field">
+          <label for="name">Nome</label>
+          <input [formControlName]="FORM.name" autofocus id="name" pInputText required type="text"/>
+          <small *ngIf="submitted && f[FORM.name].errors" class="p-error">Nome é obrigatório.</small>
+        </div>
+        <div class="field">
+          <label for="description">Descrição</label>
+          <textarea [formControlName]="FORM.description" cols="20" id="description" pInputTextarea
+                    rows="3"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Categoria</label>
+          <p-dropdown [formControlName]="FORM.category" [options]="categories" name="category"
+                      optionLabel="name" optionValue="name"
+                      placeholder="Selecione...">
+          </p-dropdown>
+          <small *ngIf="submitted && f[FORM.category].errors" class="p-error">Categoria é obrigatória.</small>
+        </div>
+
+        <div class="formgrid grid">
+          <div class="field col">
+            <label for="price">Preço</label>
+            <p-inputNumber [formControlName]="FORM.price" currency="AOA" id="price" locale="pt-PT"
+                           mode="currency"></p-inputNumber>
+            <div *ngIf="submitted && f[FORM.price].errors">
+              <small *ngIf="f[FORM.price].getError('required')" class="p-error">Preço é obrigatório.</small>
+              <small *ngIf="f[FORM.price].getError('min')" class="p-error">Preço não pode ser negativo.</small>
+            </div>
+          </div>
+        </div>
+      </form>
     </ng-template>
 
     <ng-template pTemplate="footer">
-      <button (click)="hideDialog()" class="p-button-text" icon="pi pi-times" label="Cancelar" pButton pRipple></button>
-      <button (click)="saveProduct()" class="p-button-text" icon="pi pi-check" label="Guardar" pButton
+      <button (click)="hideDialog()" [disabled]="loading" class="p-button-text" icon="pi pi-times" label="Cancelar"
+              pButton pRipple></button>
+      <button (click)="saveProduct()" [disabled]="loading" class="p-button-text" icon="pi pi-check" label="Guardar"
+              pButton
               pRipple></button>
     </ng-template>
   </p-dialog>
@@ -68,8 +80,11 @@
         <button class="p-button-help" icon="pi pi-upload" label="Export" pButton pRipple></button>
       </ng-template>
     </p-toolbar>
+    <div style="margin: auto; width: 100px">
+      <p-progressSpinner *ngIf="loading"></p-progressSpinner>
+    </div>
 
-    <p-table [(selection)]="selectedProducts"
+    <p-table *ngIf="!loading" [(selection)]="selectedProducts"
              [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true"
              [rowHover]="true"
              [rows]="10"

@@ -23,4 +23,12 @@ export class ProductService {
   getProducts() {
     return this.http.get<Product[]>(this.productURL);
   }
+
+  deleteProduct(id: number) {
+    return this.http.delete(`${this.productURL}/${id}`);
+  }
+
+  deleteProducts(products: Product[]) {
+    return this.http.post(`${this.productURL}/batch`, products);
+  }
 }

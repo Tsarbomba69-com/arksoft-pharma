@@ -12,7 +12,7 @@ export class AlertService {
     this.msgService = msgService;
   }
 
-  public successAlert(msg: string): void {
+  public success(msg: string): void {
     this.msgService.add({
       severity: 'success',
       summary: 'Sucesso',
@@ -24,7 +24,7 @@ export class AlertService {
     this.msgService.clear();
   }
 
-  public errorAlert(error: string): void {
+  public error(error: string): void {
     this.msgService.add({
       severity: 'error',
       summary: 'Erro',

@@ -25,10 +25,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   private subscription: Subscription = new Subscription();
 
-  get f() {
-    return this.form.controls;
-  }
-
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -36,6 +32,10 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     private msgService: MessageService,
     private alertService: AlertService
   ) {
+  }
+
+  get f() {
+    return this.form.controls;
   }
 
   ngOnInit() {
@@ -62,7 +62,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         },
         error: err => {
           this.loading = false;
-          this.alertService.errorAlert(err);
+          this.alertService.error(err);
         }
       });
   }

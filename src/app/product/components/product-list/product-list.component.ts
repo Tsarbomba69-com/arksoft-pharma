@@ -5,6 +5,7 @@ import {Subscription} from "rxjs";
 import {AlertService} from "@core/services";
 import {ProductService} from "@product/services";
 import {FileUpload} from "primeng/fileupload";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-product-list',
@@ -12,25 +13,36 @@ import {FileUpload} from "primeng/fileupload";
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit, OnDestroy {
-  products: Product[] = [{
-    name: 'Iboprufeno',
-    price: 1500,
-    id: 1,
-    description: '',
-    category: CATEGORIES[0],
-    image: ''
-  }];
+  products: Product[] = [];
   productDialog: boolean = false;
   categories: Category[] = CATEGORIES;
-  product: Product = {
-    name: '',
-    price: 0.0,
-    description: '',
-    category: CATEGORIES[0],
-    image: ''
+  FORM = {
+    name: 'name',
+    price: 'price',
+    description: 'description',
+    category: 'categoryName',
+    image: 'image',
+    id: 'id',
+    imgFile: 'imgFile'
   };
-  newProduct: Product = {...this.product};
-  form: FormData = new FormData();
+  initValue = {
+    [this.FORM.name]: '',
+    [this.FORM.price]: 0.0,
+    [this.FORM.description]: '',
+    [this.FORM.id]: 0,
+    [this.FORM.image]: '',
+    [this.FORM.category]: CATEGORIES[0].name
+  }
+  initCtrl = {
+    [this.FORM.id]: 0,
+    [this.FORM.name]: ['', [Validators.required, Validators.maxLength(60)]],
+    [this.FORM.price]: [0.0, [Validators.required, Validators.min(0)]],
+    [this.FORM.description]: '',
+    [this.FORM.category]: [CATEGORIES[0].name, Validators.required],
+    [this.FORM.image]: '',
+    [this.FORM.imgFile]: null
+  }
+  form: FormGroup = this.fb.group(this.initCtrl);
 
   selectedProducts: Product[] = [];
 
@@ -42,8 +54,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private alertService: AlertService,
+    private fb: FormBuilder,
     private productService: ProductService) {
     this.alertService.messageService = this.messageService;
+  }
+
+  get f() {
+    return this.form.controls
   }
 
   ngOnInit() {
@@ -58,7 +75,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   openNew() {
-    this.product = this.newProduct;
+    this.form.reset(this.initValue);
     this.submitted = false;
     this.productDialog = true;
   }
@@ -69,15 +86,24 @@ export class ProductListComponent implements OnInit, OnDestroy {
       header: 'Confirmar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-        this.selectedProducts = [];
-        this.messageService.add({severity: 'success', summary: 'Successo', detail: 'Produto removido', life: 3000});
+        this.loading = true;
+        this.productService.deleteProducts(this.selectedProducts).subscribe({
+          next: () => {
+            this.products = this.products.filter(val => !this.selectedProducts.includes(val));
+            this.selectedProducts = [];
+            this.alertService.success('Produtos selecionados removidos');
+            this.loading = false;
+          },
+          error: err => {
+            this.alertService.error(err);
+          }
+        })
       }
     });
   }
 
   editProduct(product: Product) {
-    this.product = {...product};
+    this.form.patchValue(product);
     this.productDialog = true;
   }
 
@@ -87,9 +113,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
       header: 'Confirmar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.products = this.products.filter(val => val.id !== product.id);
-        this.product = this.newProduct;
-        this.messageService.add({severity: 'success', summary: 'Successo', detail: 'Produto removido', life: 3000});
+        this.loading = true;
+        this.subscriptions.push(this.productService.deleteProduct(product.id!).subscribe({
+          next: () => {
+            this.products = this.products.filter(val => val.id !== product.id);
+            this.form.reset(this.initValue);
+            this.alertService.success('Produto removido');
+            this.loading = false;
+          },
+          error: err => {
+            this.alertService.error(err);
+            this.loading = false;
+          }
+        }));
       }
     });
   }
@@ -101,32 +137,38 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   saveProduct() {
     this.submitted = true;
-    this.loading = true;
 
-    if (!this.product.name?.trim()) return;
-    this.product.image = '';
-    this.form.append('product', JSON.stringify(this.product));
+    if (this.form.invalid) return;
+    this.loading = true;
+    const form = new FormData();
+    form.append(this.FORM.id, this.f[this.FORM.id].value);
+    form.append(this.FORM.name, this.f[this.FORM.name].value);
+    form.append(this.FORM.price, this.f[this.FORM.price].value);
+    form.append(this.FORM.description, this.f[this.FORM.description].value);
+    form.append(this.FORM.category, this.f[this.FORM.category].value);
+    form.append(this.FORM.imgFile, this.f[this.FORM.imgFile].value ?? new Blob());
     this.subscriptions.push(
-      (this.product.id! > 0 ? this.productService.putProduct(this.product.id!, this.form) : this.productService.postProduct(this.form))
+      (this.f[this.FORM.id].value > 0 ?
+        this.productService.putProduct(this.f[this.FORM.id].value, form) :
+        this.productService.postProduct(form))
         .subscribe({
           next: product => {
-            if (this.product.id) {
-              this.products[this.findIndexById(this.product.id)] = product;
-              this.alertService.successAlert('Produto actualizado');
+            if (this.f[this.FORM.id].value > 0) {
+              this.products[this.findIndexById(this.f[this.FORM.id].value)] = product;
+              this.alertService.success('Produto actualizado');
             } else {
               this.products.push(product);
-              this.alertService.successAlert('Produto registrado');
-              this.product.image = '';
+              this.alertService.success('Produto registrado');
             }
 
             this.products = [...this.products];
             this.productDialog = false;
-            this.product = {...this.newProduct};
-            this.form = new FormData();
+            this.form.reset(this.initValue);
+            this.loading = false;
           },
           error: err => {
-            this.alertService.errorAlert(err);
-            this.form.delete("product");
+            this.alertService.error(err);
+            this.loading = false;
           }
         })
     );
@@ -147,10 +189,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   setImage(e: any, product: Product, uploader: FileUpload) {
     const reader = new FileReader();
+    this.f[this.FORM.imgFile].patchValue(e.files[0]);
     reader.readAsDataURL(e.files[0]);
     reader.onload = () => {
-      product.image = reader.result as string;
-      this.form.append('image', product.image);
+      this.f[this.FORM.image].patchValue(reader.result as string);
       uploader.clear();
     };
   }

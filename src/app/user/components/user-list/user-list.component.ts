@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {User, Action} from "@core/models";
+import {Action, User} from "@core/models";
 import {UserService} from "@user/services";
 import {Subscription} from "rxjs";
 import {AlertService} from "@core/services";
@@ -37,7 +37,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.loading = false;
       },
       error: err => {
-        this.alertService.errorAlert(err);
+        this.alertService.error(err);
         this.loading = false;
       },
     }));
@@ -55,13 +55,13 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
           this.userService.deleteUser(userlId).subscribe({
             next: () => {
-              this.alertService.successAlert('Usuário removido');
+              this.alertService.success('Usuário removido');
               this.users.splice(index, 1);
               this.filteredUsers = this.users;
               this.loading = false;
             },
             error: err => {
-              this.alertService.errorAlert(err);
+              this.alertService.error(err);
               this.loading = false;
             },
           })

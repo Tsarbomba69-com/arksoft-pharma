@@ -11,7 +11,7 @@ import {FileUploadModule} from "primeng/fileupload";
 import {TableModule} from "primeng/table";
 import {RatingModule} from "primeng/rating";
 import {RadioButtonModule} from "primeng/radiobutton";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputNumberModule} from "primeng/inputnumber";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {DialogModule} from "primeng/dialog";
@@ -21,6 +21,7 @@ import {ConfirmationService} from "primeng/api";
 import {TooltipModule} from "primeng/tooltip";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ToastModule} from "primeng/toast";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 
 @NgModule({
@@ -46,7 +47,9 @@ import {ToastModule} from "primeng/toast";
     InputTextModule,
     TooltipModule,
     InputTextareaModule,
-    ToastModule
+    ToastModule,
+    ReactiveFormsModule,
+    ProgressSpinnerModule
   ],
   providers: [ConfirmationService]
 })

@@ -71,11 +71,11 @@ export class UserFormComponent implements OnInit {
         .subscribe({
           next: () => {
             this.form.reset({[this.FORM.role]: Role.PHARMACIST});
-            this.alertService.successAlert('Registrado com successo!');
+            this.alertService.success('Registrado com successo!');
             this.loading = false;
           },
           error: err => {
-            this.alertService.errorAlert(err);
+            this.alertService.error(err);
             this.loading = false;
           },
         });
@@ -85,12 +85,12 @@ export class UserFormComponent implements OnInit {
         .putUser({...user, id: this.id})
         .subscribe({
           error: res => {
-            this.alertService.errorAlert(res);
+            this.alertService.error(res);
             this.loading = false;
           },
           next: () => {
             this.form.reset();
-            this.alertService.successAlert('Usuário editado!');
+            this.alertService.success('Usuário editado!');
             this.loading = false;
             this.router.navigate(['/main/user/list']);
           },
@@ -131,7 +131,7 @@ export class UserFormComponent implements OnInit {
         },
         error: err => {
           this.loading = false;
-          this.alertService.errorAlert(err);
+          this.alertService.error(err);
         }
       }));
   }
@@ -166,14 +166,14 @@ export class UserFormComponent implements OnInit {
       .uploadImage(this.id, form)
       .subscribe({
         next: user => {
-          this.alertService.successAlert('Imagem carregada!');
+          this.alertService.success('Imagem carregada!');
           this.form.patchValue(user);
           this.photo = user?.photo!;
           fileUpload.clear();
           this.loading = false;
         },
         error: err => {
-          this.alertService.errorAlert(err);
+          this.alertService.error(err);
           fileUpload.clear();
           this.loading = false;
         },
