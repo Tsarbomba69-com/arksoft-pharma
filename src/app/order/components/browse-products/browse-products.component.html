@@ -7,7 +7,11 @@
       </ng-template>
     </p-toolbar>
 
-    <div class="grid">
+    <div style="margin: auto; width: 100px">
+      <p-progressSpinner *ngIf="loading"></p-progressSpinner>
+    </div>
+
+    <div *ngIf="!loading" class="grid justify-content-center" style="margin-bottom: 50px;">
       <div class="product-card m-2 mb-2 col-2" *ngFor="let p of products">
         <a type="button" pTooltip="Ver detalhes" tooltipPosition="top" class="imgBox">
           <img [alt]="p.name" [src]="p.image ? p.image : 'assets/icons/medicine.png'" class="mouse">

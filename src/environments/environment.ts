@@ -3,14 +3,14 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  apiUrl: 'https://localhost:7000/api',
-  baseUrl: 'https://localhost:7000/',
-  production: true
+  apiUrl: 'https://arksoftpharmaapi-production.up.railway.app/api',
+  baseUrl: 'https://arksoftpharmaapi-production.up.railway.app/',
+  production: true,
 };
 
 // export const environment = {
-//   apiUrl: 'http://localhost:5000/api',
-//   baseUrl: 'http://localhost:5000/',
+//   apiUrl: 'http://localhost:7001/api',
+//   baseUrl: 'http://localhost:7001/',
 //   production: false
 // };
 

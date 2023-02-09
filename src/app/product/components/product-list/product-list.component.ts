@@ -103,6 +103,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   editProduct(product: Product) {
+    fetch(product.image)
+      .then(res => res.blob())
+      .then(blob => {
+        this.f[this.FORM.imgFile].patchValue(new File([blob], product.image));
+      });
     this.form.patchValue(product);
     this.productDialog = true;
   }

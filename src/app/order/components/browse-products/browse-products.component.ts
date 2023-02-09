@@ -13,6 +13,7 @@ import {Subscription} from "rxjs";
 export class BrowseProductsComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   subscriptions: Subscription[] = [];
+  loading: boolean = true;
 
   constructor(
     private alertService: AlertService,
@@ -26,7 +27,10 @@ export class BrowseProductsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.productService.getProducts().subscribe(ps => this.products = ps));
+    this.subscriptions.push(this.productService.getProducts().subscribe(ps => {
+      this.products = ps;
+      this.loading = false;
+    }));
   }
 
 }
