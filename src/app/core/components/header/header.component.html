@@ -12,10 +12,12 @@
   </div>
   <div class="offcanvas-body navigation">
     <ul>
-      <li *ngFor="let i of items" class="item">
-        <a [routerLink]="i.path" (click)="offcanvas.dismiss()">
+      <li *ngFor="let i of items" class="item dropdown">
+        <a [routerLink]="i.path" (click)="offcanvas.dismiss(); dropdown()">
           <i [class]="i.icon"></i> {{ i.title }}
         </a>
+        <a class="dropdown-content item" *ngFor="let j of i.children" [routerLink]="j.path"
+           (click)="offcanvas.dismiss()"><i [class]="j.icon"></i> {{ j.title }}</a>
       </li>
     </ul>
   </div>

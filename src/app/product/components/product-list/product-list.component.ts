@@ -148,7 +148,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     const form = new FormData();
     form.append(this.FORM.id, this.f[this.FORM.id].value);
     form.append(this.FORM.name, this.f[this.FORM.name].value);
-    form.append(this.FORM.price, this.f[this.FORM.price].value);
+    form.append(this.FORM.price, String(parseFloat(this.f[this.FORM.price].value)));
     form.append(this.FORM.description, this.f[this.FORM.description].value);
     form.append(this.FORM.category, this.f[this.FORM.category].value);
     form.append(this.FORM.imgFile, this.f[this.FORM.imgFile].value ?? new Blob());

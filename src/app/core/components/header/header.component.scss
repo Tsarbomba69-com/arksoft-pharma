@@ -21,6 +21,7 @@
   text-decoration: none;
   color: #eee;
   display: inline-block;
+  position: relative;
   padding: 20px 20px 20px 40px;
   width: 100%;
 }
@@ -39,4 +40,16 @@ ul {
   height: max-content;
   padding: 0;
   overflow: auto;
+}
+
+.dropdown-content {
+  display: none !important;
+  position: absolute !important;
+  padding-left: 70px !important;
+  z-index: 10 !important;
+}
+
+.item:hover .dropdown-content {
+  display: block !important;
+  position: relative !important;
 }

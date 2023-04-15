@@ -12,8 +12,11 @@ ng g m $modulename --route $modulename --module $targetmodulename
 # -o: Open on browser after serving
 ng s -o
 
-# Deploy app
+# Deploy app. WARNING: Make sure base href points to the right path in GitHub
 ng deploy
+
+# Build for production
+ng build --configuration production --base-href /$project-name/
 
 # Run this command to install the json program
 npm install -g json

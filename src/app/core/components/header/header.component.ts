@@ -9,18 +9,7 @@ import {Role, RouteInfo} from "@core/models";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  items: RouteInfo[] = [
-    {
-      title: 'Dashboard',
-      path: '/user/dashboard',
-      icon: 'pi pi-chart-bar'
-    },
-    {
-      title: 'Usuários',
-      path: '/user/list',
-      icon: 'pi pi-users'
-    }
-  ];
+  items: RouteInfo[] = [];
 
   rolePath: { [key: string]: RouteInfo[] } = {
     [Role.ADMIN]: [
@@ -28,21 +17,25 @@ export class HeaderComponent implements OnInit {
         title: 'Dashboard',
         path: '/main',
         icon: 'pi pi-chart-bar',
+        children: []
       },
       {
         title: 'Usuários',
         path: '/main/user',
         icon: 'pi pi-users',
+        children: []
       },
       {
         title: 'Produtos',
         path: '/main/product',
-        icon: 'pi pi-box'
+        icon: 'pi pi-box',
+        children: [{title: 'Categorias', path: '/main/user', icon: 'pi pi-book', children: []}]
       },
       {
         title: 'Vendas',
         path: '/main/order',
-        icon: 'pi pi-shopping-cart'
+        icon: 'pi pi-shopping-cart',
+        children: []
       }
     ],
     [Role.PHARMACIST]: [
@@ -50,14 +43,17 @@ export class HeaderComponent implements OnInit {
         title: 'Dashboard',
         path: '/main',
         icon: 'pi pi-chart-bar',
+        children: []
       },
       {
         title: 'Vendas',
         path: '/main/order',
-        icon: 'pi pi-shopping-cart'
+        icon: 'pi pi-shopping-cart',
+        children: []
       }
     ]
   };
+  dropdownStyle: string = '';
 
   constructor(private offcanvasService: NgbOffcanvas, public authService: AuthService) {
   }
@@ -68,5 +64,9 @@ export class HeaderComponent implements OnInit {
 
   open(sidenav: TemplateRef<any>) {
     this.offcanvasService.open(sidenav, {ariaLabelledBy: 'offcanvas-basic-title'});
+  }
+
+  dropdown() {
+    this.dropdownStyle = this.dropdownStyle ? 'dropdown' : '';
   }
 }
