@@ -1,6 +1,7 @@
 ng g g $guardname
 ng g interceptor $name
 ng g c $componentname
+ng g s $servicename
 
 # Create module with routing
 ng g m $modulename --routing
